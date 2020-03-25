@@ -1,0 +1,4 @@
+#ifndef CACHE_METADATA_H_
+#define CACHE_METADATA_H_
+
+#endif //CACHE_METADATA_H
