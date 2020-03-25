@@ -3,7 +3,7 @@ project(cache)
 
 configure_file(
     ${PROJECT_SOURCE_DIR}/include/global_build_config.h.in
-    ${PROJECT_SOURCE_DIR}/include/global_build_config.h.in
+    ${PROJECT_SOURCE_DIR}/include/global_build_config.h
     @ONLY
 )
 
