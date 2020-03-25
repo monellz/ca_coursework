@@ -1,0 +1,6 @@
+#ifndef GLOBAL_CONFIG_H_
+#define GLOBAL_CONFIG_H_
+
+const char* const GLOBAL_PROJECT_DIR = "@CMAKE_SOURCE_DIR@";
+
+#endif //GLOBAL_CONFIG_H_

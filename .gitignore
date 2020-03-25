@@ -1,2 +1,2 @@
 cache/build
-*.in
+cache/include/global_build.config.h
