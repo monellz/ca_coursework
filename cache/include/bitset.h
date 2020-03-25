@@ -17,7 +17,10 @@ private:
     char data[(BIT_NUM + 7) >> 3];
 public:
     #define CHECK(x) {assert((x) < this->size() && (x) >= 0);}
-    Bitset() { memset(data, 0, sizeof(data)); }
+    Bitset() {
+        assert(BIT_NUM > 0);
+        memset(data, 0, sizeof(data));
+    }
     inline int size() {
         return BIT_NUM;
     }
@@ -33,6 +36,16 @@ public:
         else {
             CHECK(pos);
             data[pos >> 3] |= 1 << (pos & 0x7);
+        }
+    }
+    void flip(int pos = -1) {
+        if (pos < 0) {
+            for (int i = 0; i < this->size(); ++i) {
+                data[i >> 3] ^= 1 << (i & 0x7); 
+            }
+        } else {
+            CHECK(pos);
+            data[pos >> 3] ^= 1 << (pos & 0x7); 
         }
     }
     bool test(int pos) {
@@ -60,6 +73,12 @@ public:
         }
         return ret;
     }
-};
 
+    void range_swap(int src_s, int dst_s, int width) {
+        unsigned int src = range_get(src_s, src_s + width);
+        unsigned int dst = range_get(dst_s, dst_s + width);
+        range_set(src_s, src_s + width, dst);
+        range_set(dst_s, dst_s + width, src);
+    }
+};
 #endif //BITSET_H_

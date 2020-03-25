@@ -11,6 +11,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/file_parser/include)
 include_directories(${PROJECT_SOURCE_DIR}/cache_simulator/include)
 
+add_subdirectory(cache_simulator)
 add_subdirectory(file_parser)
 
 enable_testing()

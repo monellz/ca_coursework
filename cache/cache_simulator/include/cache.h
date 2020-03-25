@@ -4,17 +4,11 @@
 
 namespace cache {
 
-struct CacheLayout {
-    int way;
-    int block_size; //byte
-    int total_size; //byte
-};
-
+template<unsigned int WAY, unsigned int BLOCK_SIZE, unsigned int TOTAL_SIZE>
 class Cache {
 public:
     CacheLayout layout;
-    virtual void 
-}
+};
 } //namespace cache
 
 #endif //CACHE_H_
