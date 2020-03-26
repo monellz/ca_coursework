@@ -1,3 +1,3 @@
-# Computer Architecture
+# Cache Simulator
 
-Coursework in CA, 2020 Spring
+Coursework in Computer Architecture, 2020 Spring
