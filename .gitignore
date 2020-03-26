@@ -1,2 +1,2 @@
-cache/build
-cache/include/global_build_config.h
+build
+include/global_build_config.h

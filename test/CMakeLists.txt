@@ -18,7 +18,7 @@ target_link_libraries(bitset_test
 target_link_libraries(replace_policy_test
     ${GTEST_BOTH_LIBRARIES}
     pthread
-    cache_simulator
+    cache
 )
 
 add_test(NAME parse_test COMMAND parse_test)
