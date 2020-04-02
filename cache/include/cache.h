@@ -14,14 +14,33 @@ enum WriteAllocate {
     No
 };
 
-template<unsigned GROUP, unsigned WAY, unsigned TAG>
+template<unsigned GROUP, unsigned WAY, unsigned TAG, typename WRITE_POLICY, typename REPLACE_POLICY>
 class CacheSimulator {
 private:
     WayMetadata<TAG>* way_metadata[GROUP][WAY];
     ReplacePolicy<WAY>* policy[GROUP];
-
     WriteAllocate write_allocate_type;
 public:
+    CacheSimulator(WriteAllocate type): write_allocate_type(type) {
+        for (int i = 0; i < GROUP; ++i) {
+            for (int j = 0; j < WAY; ++j) {
+                way_metadata[i][j] = new WRITE_POLICY();
+            }
+
+            policy[i] = new REPLACE_POLICY();
+        }
+    }
+
+    ~CacheSimulator() {
+        for (int i = 0; i < GROUP; ++i) {
+            for (int j = 0; j < WAY; ++j) {
+                delete way_metadata[i][j];
+            }
+
+            delete policy[i];
+        }
+    }
+
     bool access(const Access& ac) {
         bool miss = false;
         unsigned int index;
@@ -34,8 +53,10 @@ public:
             miss = write(ac.addr);
         }
 
-        total_access++;
-        if (miss) miss_access++;
+        if (miss) {
+            auto stats = PerfStats::get_instance();
+            stats.cache_miss++;
+        }
         return miss;
     }
 
@@ -112,7 +133,6 @@ public:
             //TODO: STAT
         }
         
-
         return false;
     }
 };

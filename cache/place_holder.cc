@@ -1,4 +1,6 @@
 #include "include/replace_policy.h"
+#include "include/way_metadata.h"
+#include "include/cache.h"
 
 
 /*

@@ -1,6 +1,7 @@
 #ifndef CACHE_UTIL_H_
 #define CACHE_UTIL_H_
 
+#include <stdint.h>
 #include "perf_stats.h"
 
 namespace cache {
