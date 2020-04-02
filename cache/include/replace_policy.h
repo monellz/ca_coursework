@@ -7,7 +7,8 @@ template<unsigned WAY>
 class ReplacePolicy {
 public:
     ReplacePolicy(){};
-    virtual int victim_after_access(int access_way) = 0;
+    void access(int access_way) {}
+    virtual int victim() = 0;
 };
 
 template<unsigned WAY>
@@ -31,7 +32,7 @@ public:
         return CEIL_LOG2(WAY);
     }
 
-    int victim_after_access(int access_way) {
+    void access(int access_way) {
         int w = stack_width();
         for (int i = 0; i < stack.size(); i += w) {
             if (stack.range_get(i, i + w) == access_way) {
@@ -43,7 +44,9 @@ public:
                 break;
             }
         }
+    }
 
+    int victim() {
         //the last one is the victim
         return stack.range_get(stack.size() - stack_width(), stack.size());
     }
@@ -63,7 +66,7 @@ public:
     //right child
     #define rc(x) (((x) + 1) << 1)
 
-    int victim_after_access(int access_way) {
+    int victim() {
         int i = 0;
         int p = i;
         while (lc(i) < metadata.size()) {

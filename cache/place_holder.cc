@@ -7,3 +7,8 @@
  *
  *
  */
+
+
+#include "perf_stats.h"
+
+PerfStats PerfStats::instance;
