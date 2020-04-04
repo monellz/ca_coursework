@@ -65,10 +65,8 @@ public:
             hit = write(tag, index);
         }
 
-        if (!hit) {
-            PerfStats::get_instance().cache_miss++;
-        }
-        PerfStats::get_instance().total_access++;
+
+        PerfStats::get_instance().forward(hit);
         return hit;
     }
 

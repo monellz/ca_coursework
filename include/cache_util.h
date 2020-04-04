@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <assert.h>
+#include <stdlib.h>
 #include <iostream>
 #include "perf_stats.h"
 

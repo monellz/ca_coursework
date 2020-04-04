@@ -1,7 +1,8 @@
 #ifndef BITSET_H_
 #define BITSET_H_
 
-#include <cstdlib>
+#include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 
 constexpr unsigned FLOOR_LOG2(unsigned x) {

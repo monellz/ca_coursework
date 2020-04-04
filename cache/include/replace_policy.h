@@ -1,7 +1,8 @@
 #ifndef REPLACE_POLICY_H_
 #define REPLACE_POLICY_H_
-#include "bitset.h"
 #include <iostream>
+#include "bitset.h"
+#include "perf_stats.h"
 
 namespace cache {
 template<unsigned WAY>
@@ -15,10 +16,11 @@ public:
 
 template<unsigned WAY>
 class LRU: public ReplacePolicy<WAY> {
-private:
+public:
     //left->top(newest),  right->bottom(oldest)
     Bitset<CEIL_LOG2(WAY) * WAY> stack;
-public:
+
+
     LRU() {
         stack.reset();
         int w = stack_width();
@@ -30,7 +32,7 @@ public:
         assert(way == WAY);
     }
 
-    unsigned int stack_width() {
+    inline unsigned int stack_width() {
         return CEIL_LOG2(WAY);
     }
 
@@ -63,9 +65,9 @@ public:
 
 template<unsigned WAY>
 class BT: public ReplacePolicy<WAY> {
-private:
-    Bitset<WAY - 1> metadata;
 public:
+    Bitset<WAY - 1> metadata;
+
     BT() {
         metadata.reset();    
     }
@@ -87,6 +89,31 @@ public:
 
         if (metadata.test(i)) return rc(i) - metadata.size();
         else return lc(i) - metadata.size();
+    }
+};
+
+
+template<unsigned WAY>
+class FIFO: public LRU<WAY> {
+public:
+    void access(int access_way) {
+        //do nothing
+    }
+    int victim() {
+        //fifo
+        int w = this->stack_width();
+        for (int i = this->stack.size() - w; i >= w; i -= w) {
+            this->stack.range_swap(i, i - w, w);
+        }
+        return this->stack.range_get(0, w); 
+    }
+};
+
+template<unsigned WAY>
+class Rand: public ReplacePolicy<WAY> {
+public:
+    int victim() {
+        return rand() % WAY;
     }
 };
 
