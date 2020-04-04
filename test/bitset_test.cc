@@ -40,7 +40,7 @@ TEST(bitset_test, single_bit_op) {
 
 TEST(bitset_test, range_op) {
     Bitset<100> bs;
-    std::cout << "bs.size() == " << bs.size() << std::endl;
+    EXPECT_EQ(bs.size(), 100);
     bs.range_set(0, 8, 111);
     EXPECT_EQ(bs.range_get(0, 8), 111);
 
@@ -53,6 +53,7 @@ TEST(bitset_test, range_op) {
     bs.range_set(0, 15, 22222);
     EXPECT_EQ(bs.range_get(0, 15), 22222);
 
+    std::cout << "rand set" << std::endl;
 
     int count = 1000;
     for (int i = 0; i < count; ++i) {

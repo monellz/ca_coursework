@@ -2,22 +2,23 @@
 #define WAYMETADATA_H_
 
 #include "bitset.h"
+#include "perf_stats.h"
 namespace cache {
 
 //one way's metadata
 template<unsigned TAG>
 class WayMetadata {
 public:
-    virtual unsigned int get_tag() = 0;
-    virtual void set_tag(unsigned int tag) = 0;
+    virtual unsigned long long get_tag() = 0;
+    virtual void set_tag(unsigned long long tag) = 0;
 
-    void write_access() {};
+    virtual void write_access() {};
     virtual bool is_valid() = 0;
     virtual void set_valid() = 0;
     virtual void set_invalid() = 0;
 
     //do someting when swap_out
-    void before_swap_out(unsigned int new_tag) {}
+    virtual void before_swap_out() {}
 };
 
 template<unsigned TAG>
@@ -34,18 +35,19 @@ public:
     void set_dirty() { metadata.set(1); }
     void clear_dirty() { metadata.reset(1); }
 
-    unsigned int get_tag() {
+    unsigned long long get_tag() {
         return metadata.range_get(2, metadata.size());
     }
 
-    void set_tag(unsigned int tag) {
+    void set_tag(unsigned long long tag) {
         return metadata.range_set(2, metadata.size(), tag);
     }
 
     void before_swap_out() {
         //should write back to memory?
-        if (is_dirty()) {
+        if (is_valid() && is_dirty()) {
             //write back 
+            PerfStats::get_instance().memory_access++;
         }
         clear_dirty();
     }
@@ -64,11 +66,15 @@ public:
     void set_valid() { metadata.set(0); }
     void set_invalid() { metadata.reset(0); }
 
-    unsigned int get_tag() {
+    unsigned long long get_tag() {
         return metadata.range_get(1, metadata.size());
     }
-    void set_tag(unsigned int tag) {
+    void set_tag(unsigned long long tag) {
         return metadata.range_set(1, metadata.size(), tag);
+    }
+
+    void write_access() {
+        PerfStats::get_instance().memory_access++;
     }
 
 };

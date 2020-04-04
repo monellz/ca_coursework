@@ -11,7 +11,7 @@ constexpr unsigned CEIL_LOG2(unsigned x) {
     return x == 1? 0: FLOOR_LOG2(x - 1) + 1;
 }
 
-template<unsigned int BIT_NUM>
+template<unsigned BIT_NUM>
 class Bitset {
 private:
     char data[(BIT_NUM + 7) >> 3];
@@ -54,20 +54,23 @@ public:
     }
 
     //TODO: better algorithm 
-    void range_set(int s, int e, unsigned int v) {
+    void range_set(int s, int e, unsigned long long v) {
         //set [s, e) to v  (from left to right)
         //v < 2^(e-s)        
-        assert(v < (1 << (e - s)));
-        for (int i = e - 1, j = 1; i >= s; --i, j <<= 1) {
+        assert(e > s && s >= 0);
+        assert(v < (1ull << (e - s)));
+        unsigned long long j = 1;
+        for (int i = e - 1; i >= s; --i, j <<= 1) {
             if (v & j) set(i);
             else reset(i);
         }
     }
-    unsigned int range_get(int s, int e) {
+    unsigned long long range_get(int s, int e) {
         //get value at [s, e)
-        assert(e > s);
-        unsigned int ret = 0;
-        for (int i = s, j = 1; i < e; ++i, j <<= 1) {
+        assert(e > s && s >= 0);
+        unsigned long long ret = 0;
+        unsigned long long j = 1;
+        for (int i = s; i < e; ++i, j <<= 1) {
             if (test(i)) ret = (ret << 1) | 1;
             else ret <<= 1;
         }
@@ -75,8 +78,8 @@ public:
     }
 
     void range_swap(int src_s, int dst_s, int width) {
-        unsigned int src = range_get(src_s, src_s + width);
-        unsigned int dst = range_get(dst_s, dst_s + width);
+        unsigned long long src = range_get(src_s, src_s + width);
+        unsigned long long dst = range_get(dst_s, dst_s + width);
         range_set(src_s, src_s + width, dst);
         range_set(dst_s, dst_s + width, src);
     }

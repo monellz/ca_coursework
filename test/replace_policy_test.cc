@@ -13,6 +13,7 @@ TEST(replace_policy_test, lru) {
     for (int i = 0; i < 8; ++i) {
         lru_cache.access(i);
     }
+    lru_cache.show();
 
     /*
      * now stack
@@ -58,6 +59,19 @@ TEST(replace_policy_test, lru) {
     EXPECT_EQ(lru_cache.victim(), 0);
     lru_cache.access(0);
     EXPECT_EQ(lru_cache.victim(), 2);
+    lru_cache.show();
+}
+
+TEST(replace_policy_test, lru_repeat) {
+    LRU<4> lru_cache;
+    EXPECT_EQ(lru_cache.stack_width(), 2); 
+    
+    for (int i = 0; i < 16; ++i) {
+        int way = i / 4;
+        lru_cache.access(way);
+    }
+    lru_cache.show();
+    EXPECT_EQ(lru_cache.victim(), 0);
 }
 
 

@@ -1,14 +1,16 @@
 #ifndef REPLACE_POLICY_H_
 #define REPLACE_POLICY_H_
 #include "bitset.h"
+#include <iostream>
 
 namespace cache {
 template<unsigned WAY>
 class ReplacePolicy {
 public:
     ReplacePolicy(){};
-    void access(int access_way) {}
+    virtual void access(int access_way) {}
     virtual int victim() = 0;
+    virtual void show() {}
 };
 
 template<unsigned WAY>
@@ -49,6 +51,13 @@ public:
     int victim() {
         //the last one is the victim
         return stack.range_get(stack.size() - stack_width(), stack.size());
+    }
+
+    void show() {
+        for (int i = 0; i < stack.size(); i += stack_width()) {
+            std::cout << stack.range_get(i, i + stack_width()) << "->";
+        }
+        std::cout << std::endl;
     }
 };
 
