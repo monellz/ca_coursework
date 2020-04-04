@@ -4,8 +4,10 @@
 
 //write back / write through
 #include "way_metadata.h"
-//lru / bt
+
 #include "replace_policy.h"
+#include "adaptive_insertion_policies.h"
+#include "score.h"
 
 namespace cache {
 

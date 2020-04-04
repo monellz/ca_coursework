@@ -56,3 +56,7 @@ bool FileParser::parse_type(const std::string& src, cache::AccessType& dst) {
     }
     return true;
 }
+
+void FileParser::set_type(AccessType type) {
+    access_type = type;
+}

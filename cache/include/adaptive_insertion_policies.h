@@ -22,7 +22,7 @@ public:
                     }
                 } else {
                     //move to LRU
-                    for (i += w; i < stack.size(); i += w) {
+                    for (i += w; i < this->stack.size(); i += w) {
                         this->stack.range_swap(i - w, i, w);
                     }
                 }
@@ -54,7 +54,7 @@ public:
                     }
                 } else {
                     //move to LRU
-                    for (i += w; i < stack.size(); i += w) {
+                    for (i += w; i < this->stack.size(); i += w) {
                         this->stack.range_swap(i - w, i, w);
                     }
                 }

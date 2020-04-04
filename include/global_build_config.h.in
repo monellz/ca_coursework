@@ -2,5 +2,16 @@
 #define GLOBAL_CONFIG_H_
 
 const char* const GLOBAL_PROJECT_DIR = "@CMAKE_SOURCE_DIR@";
-
+const char TRACE[][20] = {
+    "astar.trace",
+    "bodytrack_1m.trace",
+    "bzip2.trace",
+    "canneal.uniq.trace",
+    "gcc.trace",
+    "mcf.trace",
+    "perlbench.trace",
+    "streamcluster.trace",
+    "swim.trace",
+    "twolf.trace"
+};
 #endif //GLOBAL_CONFIG_H_

@@ -15,6 +15,7 @@ include_directories(${PROJECT_SOURCE_DIR}/cache/include)
 
 add_subdirectory(cache)
 add_subdirectory(file_parser)
+add_subdirectory(bench)
 
 enable_testing()
 add_subdirectory(test)

@@ -1,6 +1,7 @@
 #ifndef SCORE_H_
 #define SCORE_H_
 
+#include <vector>
 #include "replace_policy.h"
 
 namespace cache {
@@ -49,7 +50,6 @@ public:
     }
 
     Score(unsigned int init_score) {
-        prev_miss_num
         set_init_score(init_score);
         for (int i = 0; i < WAY; ++i) {
             scores.range_set(i * width(), (i + 1) * width(), init_score);
@@ -65,7 +65,7 @@ public:
             }
         }
 
-        int s = (int)get_init_score();
+        s = (int)get_init_score();
         s += direction() * STEP;
         s = s < 0? 0: (s > upper_score()? upper_score(): s);
         set_init_score(s);
