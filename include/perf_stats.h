@@ -15,6 +15,8 @@ public:
     int cache_miss;
     //0 hit, 1 miss
     Bitset<MAX_ACCESS_NUM> access_log;
+    PerfStats(const PerfStats& p) = delete;
+    PerfStats(PerfStats&& p) = delete;
     int time;
 
     //number of bit 1

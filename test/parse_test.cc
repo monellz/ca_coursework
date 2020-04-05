@@ -13,6 +13,8 @@ TEST(parse_rw_64_test, astar) {
     vector<cache::Access> access_list;
     EXPECT_TRUE(parser.parse(path, access_list)) << "parse error";
     EXPECT_EQ(access_list.size(), 501468) << "trace num is not correct";
+    EXPECT_EQ(access_list[0].addr, 0x7fe8d76f8bc8);
+    EXPECT_EQ(access_list[access_list.size() - 1].addr, 0x7fffbbd83f60);
 }
 
 TEST(parse_64_blankline_test, bodytrack_1m) {
@@ -21,6 +23,8 @@ TEST(parse_64_blankline_test, bodytrack_1m) {
     vector<cache::Access> access_list;
     EXPECT_TRUE(parser.parse(path, access_list)) << "parse error";
     EXPECT_EQ(access_list.size(), 290546) << "trace num is not correct";
+    EXPECT_EQ(access_list[0].addr, 0x1fda39c0);
+    EXPECT_EQ(access_list[access_list.size() - 1].addr, 0x1fd074c0);
 }
 TEST(parse_rw_64_test, bzip2) {
     FileParser parser(ReadWrite);
@@ -28,7 +32,8 @@ TEST(parse_rw_64_test, bzip2) {
     vector<cache::Access> access_list;
     EXPECT_TRUE(parser.parse(path, access_list)) << "parse error";
     EXPECT_EQ(access_list.size(), 544514) << "trace num is not correct";
-
+    EXPECT_EQ(access_list[0].addr, 0x1a2dce8);
+    EXPECT_EQ(access_list[access_list.size() - 1].addr, 0x1a2dc90);
 }
 TEST(parse_64_blankline_test, canneal_uniq) {
     FileParser parser(None);
@@ -36,7 +41,8 @@ TEST(parse_64_blankline_test, canneal_uniq) {
     vector<cache::Access> access_list;
     EXPECT_TRUE(parser.parse(path, access_list)) << "parse error";
     EXPECT_EQ(access_list.size(), 548918) << "trace num is not correct";
-
+    EXPECT_EQ(access_list[0].addr, 0x1ee59800);
+    EXPECT_EQ(access_list[access_list.size() - 1].addr, 0x619c40);
 }
 TEST(parse_ls_64_test, gcc) {
     FileParser parser(LoadStore);
@@ -44,7 +50,8 @@ TEST(parse_ls_64_test, gcc) {
     vector<cache::Access> access_list;
     EXPECT_TRUE(parser.parse(path, access_list)) << "parse error";
     EXPECT_EQ(access_list.size(), 515683) << "trace num is not correct";
-
+    EXPECT_EQ(access_list[0].addr, 0x1fffff50);
+    EXPECT_EQ(access_list[access_list.size() - 1].addr, 0x1ffff640);
 }
 TEST(parse_rw_64_test, mcf) {
     FileParser parser(ReadWrite);
@@ -52,7 +59,8 @@ TEST(parse_rw_64_test, mcf) {
     vector<cache::Access> access_list;
     EXPECT_TRUE(parser.parse(path, access_list)) << "parse error";
     EXPECT_EQ(access_list.size(), 507700) << "trace num is not correct";
-
+    EXPECT_EQ(access_list[0].addr, 0x7fff77885050);
+    EXPECT_EQ(access_list[access_list.size() - 1].addr, 0x7fff778852c0);
 }
 TEST(parse_rw_64_test, perlbench) {
     FileParser parser(ReadWrite);
@@ -60,7 +68,8 @@ TEST(parse_rw_64_test, perlbench) {
     vector<cache::Access> access_list;
     EXPECT_TRUE(parser.parse(path, access_list)) << "parse error";
     EXPECT_EQ(access_list.size(), 507441) << "trace num is not correct";
-
+    EXPECT_EQ(access_list[0].addr, 0x7fff0d44ee98);
+    EXPECT_EQ(access_list[access_list.size() - 1].addr, 0x7fff0d44ee18);
 }
 TEST(parse_64_blankline_test, streamcluster) {
     FileParser parser(None);
@@ -68,7 +77,8 @@ TEST(parse_64_blankline_test, streamcluster) {
     vector<cache::Access> access_list;
     EXPECT_TRUE(parser.parse(path, access_list)) << "parse error";
     EXPECT_EQ(access_list.size(), 986159) << "trace num is not correct";
-
+    EXPECT_EQ(access_list[0].addr, 0x1fe11a00);
+    EXPECT_EQ(access_list[access_list.size() - 1].addr, 0x1f16fa80);
 }
 TEST(parse_ls_64_test, swim) {
     FileParser parser(LoadStore);
@@ -76,7 +86,8 @@ TEST(parse_ls_64_test, swim) {
     vector<cache::Access> access_list;
     EXPECT_TRUE(parser.parse(path, access_list)) << "parse error";
     EXPECT_EQ(access_list.size(), 303193) << "trace num is not correct";
-
+    EXPECT_EQ(access_list[0].addr, 0x1fffff78);
+    EXPECT_EQ(access_list[access_list.size() - 1].addr, 0x1ffffd18);
 }
 TEST(parse_ls_64_test, twolf) {
     FileParser parser(LoadStore);
@@ -84,4 +95,6 @@ TEST(parse_ls_64_test, twolf) {
     vector<cache::Access> access_list;
     EXPECT_TRUE(parser.parse(path, access_list)) << "parse error";
     EXPECT_EQ(access_list.size(), 482824) << "trace num is not correct";
+    EXPECT_EQ(access_list[0].addr, 0x1fffff70);
+    EXPECT_EQ(access_list[access_list.size() - 1].addr, 0x1fffed48);
 }

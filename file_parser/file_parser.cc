@@ -11,6 +11,7 @@ bool FileParser::parse(const std::string& fn, std::vector<cache::Access>& access
     std::string data;
     while (in >> data) {
         cache::Access access;
+        //std::cout << "data: " << data << std::endl;
         if (access_type != None) {
             if (!parse_type(data, access.type)) {
                 in.close();
@@ -18,9 +19,9 @@ bool FileParser::parse(const std::string& fn, std::vector<cache::Access>& access
             }
             in >> data;
         } else {
-            //TODO
             access.type = cache::Read;
         }
+        //std::cout << "data: " << data << std::endl;
         if (!parse_addr64(data, access.addr)) {
             in.close();
             return false;
@@ -36,7 +37,7 @@ bool FileParser::parse(const std::string& fn, std::vector<cache::Access>& access
 
 
 bool FileParser::parse_addr64(const std::string& src, uint64_t& dst) {
-    dst = std::stoll(src);
+    dst = std::stoull(src, 0, 16);
     return true;
 }
 
