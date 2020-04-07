@@ -39,10 +39,21 @@ int main() {
         perf.clear();
     }
     std::cout << std::endl;
+    */
 
 
     //8B BLOCK_SIZE, all associate
-    //CacheSimulator<61, 0, 3, (1 << 14), WriteBack<61>, LRU<(1 << 14)>> a_8_cache(WriteAllocate::Yes);
+    for (int i = 0; i < manager.benches.size(); ++i) {
+        CacheSimulator<61, 0, 3, (1 << 14), WriteBack<61>, LRU<(1 << 14)>> a_8_cache(WriteAllocate::Yes);
+        for (int j = 0; j < manager.benches[i].access.size(); ++j) {
+            a_8_cache.access(manager.benches[i].access[j]);
+        }
+        printf("[%s] [8B_all_associate_cache] cache_miss: %d/%d=%f\n", manager.benches[i].name.c_str(), perf.cache_miss, perf.total_access, (float)perf.cache_miss / perf.total_access);
+        perf.clear();
+    }
+    std::cout << std::endl;
+
+    /*
     //8B BLOCK_SIZE, 4 way
     for (int i = 0; i < manager.benches.size(); ++i) {
         CacheSimulator<49, 12, 3, 4, WriteBack<49>, LRU<4>> w4_8_cache(WriteAllocate::Yes);
@@ -75,9 +86,19 @@ int main() {
         perf.clear();
     }
     std::cout << std::endl;
+    */
 
     //32B BLOCK_SIZE, all associate
-    //CacheSimulator<59, 0, 5, (1 << 12), WriteBack<59>, LRU<(1 << 12)>> a_32_cache(WriteAllocate::Yes);
+    for (int i = 0; i < manager.benches.size(); ++i) {
+        CacheSimulator<59, 0, 5, (1 << 12), WriteBack<59>, LRU<(1 << 12)>> a_32_cache(WriteAllocate::Yes);
+        for (int j = 0; j < manager.benches[i].access.size(); ++j) {
+            a_32_cache.access(manager.benches[i].access[j]);
+        }
+        printf("[%s] [32B_all_associate_cache] cache_miss: %d/%d=%f\n", manager.benches[i].name.c_str(), perf.cache_miss, perf.total_access, (float)perf.cache_miss / perf.total_access);
+        perf.clear();
+    }
+    std::cout << std::endl;
+    /*
     //32B BLOCK_SIZE, 4 way
     for (int i = 0; i < manager.benches.size(); ++i) {
         CacheSimulator<49, 10, 5, 4, WriteBack<49>, LRU<4>> w4_32_cache(WriteAllocate::Yes);

@@ -53,9 +53,17 @@ TEST(bitset_test, range_op) {
     bs.range_set(0, 15, 22222);
     EXPECT_EQ(bs.range_get(0, 15), 22222);
 
+    bs.range_set(86, 92, 41);
+    EXPECT_EQ(bs.range_get(86, 92), 41);
+
+    bs.range_set(83, 86, 1);
+    EXPECT_EQ(bs.range_get(83, 86), 1);
+
+    bs.range_set(67, 68, 1);
+    EXPECT_EQ(bs.range_get(67, 68), 1);
     std::cout << "rand set" << std::endl;
 
-    int count = 1000;
+    int count = 1000000;
     for (int i = 0; i < count; ++i) {
         int s = rand() % 100;
         int e = rand() % 100;
@@ -68,6 +76,6 @@ TEST(bitset_test, range_op) {
 
         unsigned int value = rand() % (1 << (e - s));
         bs.range_set(s, e, value);
-        EXPECT_EQ(bs.range_get(s, e), value);
+        EXPECT_EQ(bs.range_get(s, e), value) << "s, e, value: " << s << ", " << e << ", " << value;
     }
 }

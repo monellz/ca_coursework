@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(cache_simulator)
 
-add_compile_options(-O3)
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 find_package(OpenMP REQUIRED)
 if (OPENMP_FOUND)
     message("openmp found")

@@ -35,25 +35,25 @@ int main() {
         for (int j = 0; j < manager.benches[i].access.size(); ++j) {
             wb_alloc_cache.access(manager.benches[i].access[j]);
         }
-        printf("[%s] [wb_alloc_cache] cache_miss: %d/%d=%f\n", manager.benches[i].name.c_str(), perf.cache_miss, perf.total_access, (float)perf.cache_miss / perf.total_access);
+        printf("[%s] [wb_alloc_cache] memory_access: %d, cache_miss: %d/%d=%f\n", manager.benches[i].name.c_str(), perf.memory_access, perf.cache_miss, perf.total_access, (float)perf.cache_miss / perf.total_access);
         perf.clear();
 
         for (int j = 0; j < manager.benches[i].access.size(); ++j) {
             wb_nalloc_cache.access(manager.benches[i].access[j]);
         }
-        printf("[%s] [wb_nalloc_cache] cache_miss: %d/%d=%f\n", manager.benches[i].name.c_str(), perf.cache_miss, perf.total_access, (float)perf.cache_miss / perf.total_access);
+        printf("[%s] [wb_nalloc_cache] memory_access: %d, cache_miss: %d/%d=%f\n", manager.benches[i].name.c_str(), perf.memory_access, perf.cache_miss, perf.total_access, (float)perf.cache_miss / perf.total_access);
         perf.clear();
 
         for (int j = 0; j < manager.benches[i].access.size(); ++j) {
             wt_alloc_cache.access(manager.benches[i].access[j]);
         }
-        printf("[%s] [wt_alloc_cache] cache_miss: %d/%d=%f\n", manager.benches[i].name.c_str(), perf.cache_miss, perf.total_access, (float)perf.cache_miss / perf.total_access);
+        printf("[%s] [wt_alloc_cache] memory_access: %d, cache_miss: %d/%d=%f\n", manager.benches[i].name.c_str(), perf.memory_access, perf.cache_miss, perf.total_access, (float)perf.cache_miss / perf.total_access);
         perf.clear();
 
         for (int j = 0; j < manager.benches[i].access.size(); ++j) {
             wt_nalloc_cache.access(manager.benches[i].access[j]);
         }
-        printf("[%s] [wt_nalloc_cache] cache_miss: %d/%d=%f\n", manager.benches[i].name.c_str(), perf.cache_miss, perf.total_access, (float)perf.cache_miss / perf.total_access);
+        printf("[%s] [wt_nalloc_cache] memory_access: %d, cache_miss: %d/%d=%f\n", manager.benches[i].name.c_str(), perf.memory_access, perf.cache_miss, perf.total_access, (float)perf.cache_miss / perf.total_access);
         perf.clear();
     }
 }
