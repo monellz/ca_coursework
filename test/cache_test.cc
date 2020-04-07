@@ -183,3 +183,63 @@ TEST(cache_test, lru_no_allocate) {
     PerfStats::get_instance().clear();
 
 }
+
+TEST(cache_test, lru_all_associate) {
+    const unsigned BLOCK = 2; // 4 bytes
+    const unsigned INDEX = 1; //1 groups -> associate
+    const unsigned TAG = 61;
+    const unsigned WAY = 4;
+
+    CacheSimulator<TAG, INDEX, BLOCK, WAY, WriteBack<TAG>, LRU<WAY>> lru_cache(WriteAllocate::Yes);
+
+    Access ac;
+    ac.type = Write;
+    ac.addr = 0;    
+
+    for (int i = 0; i < 16; i += 4) {
+        ac.addr = i;
+        EXPECT_FALSE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+        ac.addr = i + 1;
+        EXPECT_TRUE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+        ac.addr = i + 2;
+        EXPECT_TRUE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+        ac.addr = i + 3;
+        EXPECT_TRUE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+    }
+    EXPECT_EQ(PerfStats::get_instance().total_access, 16);
+    EXPECT_EQ(PerfStats::get_instance().cache_miss, 4);
+    EXPECT_EQ(PerfStats::get_instance().memory_access, 4);
+    PerfStats::get_instance().clear();
+
+    for (int i = 0; i < 16; i += 4) {
+        ac.addr = i;
+        EXPECT_TRUE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+        ac.addr = i + 1;
+        EXPECT_TRUE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+        ac.addr = i + 2;
+        EXPECT_TRUE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+        ac.addr = i + 3;
+        EXPECT_TRUE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+    }
+    EXPECT_EQ(PerfStats::get_instance().total_access, 16);
+    EXPECT_EQ(PerfStats::get_instance().cache_miss, 0);
+    EXPECT_EQ(PerfStats::get_instance().memory_access, 0);
+    PerfStats::get_instance().clear();
+
+
+    for (int i = 16; i < 32; i += 4) {
+        ac.addr = i;
+        EXPECT_FALSE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+        ac.addr = i + 1;
+        EXPECT_TRUE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+        ac.addr = i + 2;
+        EXPECT_TRUE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+        ac.addr = i + 3;
+        EXPECT_TRUE(lru_cache.access(ac)) << "i: " << i << " addr: " << ac.addr;
+    }
+    EXPECT_EQ(PerfStats::get_instance().total_access, 16);
+    EXPECT_EQ(PerfStats::get_instance().cache_miss, 4);
+    EXPECT_EQ(PerfStats::get_instance().memory_access, 4);
+    PerfStats::get_instance().clear();
+
+}

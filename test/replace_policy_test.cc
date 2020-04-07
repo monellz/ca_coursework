@@ -78,4 +78,10 @@ TEST(replace_policy_test, lru_repeat) {
 TEST(replace_policy_test, bt) {
     BT<8> bt_cache;
     EXPECT_EQ(bt_cache.victim(), 0);
+
+    bt_cache.access(0);
+    EXPECT_EQ(bt_cache.victim(), 4);
+
+    bt_cache.access(5);
+    EXPECT_EQ(bt_cache.victim(), 2);
 }

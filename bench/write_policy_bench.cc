@@ -25,13 +25,13 @@ const int WAY = 8;
 bench::BenchManager manager;
 
 int main() {
-    CacheSimulator<TAG, INDEX, BLOCK, WAY, WriteBack<TAG>, LRU<WAY>> wb_alloc_cache(WriteAllocate::Yes);
-    CacheSimulator<TAG, INDEX, BLOCK, WAY, WriteBack<TAG>, LRU<WAY>> wb_nalloc_cache(WriteAllocate::No);
-    CacheSimulator<TAG, INDEX, BLOCK, WAY, WriteThrough<TAG>, LRU<WAY>> wt_alloc_cache(WriteAllocate::Yes);
-    CacheSimulator<TAG, INDEX, BLOCK, WAY, WriteThrough<TAG>, LRU<WAY>> wt_nalloc_cache(WriteAllocate::No);
-
     PerfStats& perf = PerfStats::get_instance();
     for (int i = 0; i < manager.benches.size(); ++i) {
+        CacheSimulator<TAG, INDEX, BLOCK, WAY, WriteBack<TAG>, LRU<WAY>> wb_alloc_cache(WriteAllocate::Yes);
+        CacheSimulator<TAG, INDEX, BLOCK, WAY, WriteBack<TAG>, LRU<WAY>> wb_nalloc_cache(WriteAllocate::No);
+        CacheSimulator<TAG, INDEX, BLOCK, WAY, WriteThrough<TAG>, LRU<WAY>> wt_alloc_cache(WriteAllocate::Yes);
+        CacheSimulator<TAG, INDEX, BLOCK, WAY, WriteThrough<TAG>, LRU<WAY>> wt_nalloc_cache(WriteAllocate::No);
+
         for (int j = 0; j < manager.benches[i].access.size(); ++j) {
             wb_alloc_cache.access(manager.benches[i].access[j]);
         }

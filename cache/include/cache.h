@@ -1,6 +1,7 @@
 #ifndef CACHE_H_
 #define CACHE_H_
 #include "cache_util.h"
+#include "omp.h"
 
 //write back / write through
 #include "way_metadata.h"
@@ -26,6 +27,7 @@ private:
 public:
     CacheSimulator(WriteAllocate type): write_allocate_type(type) {
         assert(TAG + INDEX + BLOCK == 64);
+        #pragma omp parallel for schedule(dynamic)
         for (int i = 0; i < GROUP; ++i) {
             for (int j = 0; j < WAY; ++j) {
                 way_metadata[i][j] = new WRITE_POLICY();
@@ -73,23 +75,35 @@ public:
     }
 
     bool read(unsigned long long tag, unsigned long long index) {
+        std::atomic<int> victim(-1);
+        int hit_idx = -1;
+        #pragma omp parallel for schedule(dynamic)
         for (int i = 0; i < WAY; ++i) {
-            if (way_metadata[index][i]->is_valid() && way_metadata[index][i]->get_tag() == tag) {
-                //cache hit
-                
-                //access the way: 
-                //  cache access
-                //  replace_policy update
-                PerfStats::get_instance().cache_access++;
-                policy[index]->access(i);
-                return true;
+            if (way_metadata[index][i]->is_valid()) {
+                if (way_metadata[index][i]->get_tag() == tag) {
+                    hit_idx = i;
+                }
+            } else {
+                victim = i;
             }
         }
 
+        if (hit_idx >= 0) {
+            //cache hit
+            
+            //access the way: 
+            //  cache access
+            //  replace_policy update
+            PerfStats::get_instance().cache_access++;
+            policy[index]->access(hit_idx);
+            return true;
+        }
+
         //cache miss
-        
-        //find the victim way by the policy
-        int victim = policy[index]->victim();
+        if (victim < 0) {
+            //find the victim way by the policy
+            victim = policy[index]->victim();
+        }
 
         //swap out the victim block to memory
         way_metadata[index][victim]->before_swap_out();
@@ -109,25 +123,38 @@ public:
     }
 
     bool write(unsigned long long tag, unsigned long long index) {
+        std::atomic<int> victim(-1);
+        int hit_idx = -1;
+        #pragma omp parallel for schedule(dynamic)
         for (int i = 0; i < WAY; ++i) {
-            if (way_metadata[index][i]->is_valid() && way_metadata[index][i]->get_tag() == tag) {
-                //cache hit
-                                                
-                //access the way:
-                //  replace_policy update
-                //  metadata update
-                PerfStats::get_instance().cache_access++;
-                policy[index]->access(i);
-                way_metadata[index][i]->write_access();
-                return true;
+            if (way_metadata[index][i]->is_valid()) {
+                if (way_metadata[index][i]->get_tag() == tag) {
+                    hit_idx = i;
+                }
+            } else {
+                victim = i;
             }
+        }
+        
+        if (hit_idx >= 0) {
+            //cache hit
+
+            //access the way:
+            //  replace_policy update
+            //  metadata update
+            PerfStats::get_instance().cache_access++;
+            policy[index]->access(hit_idx);
+            way_metadata[index][hit_idx]->write_access();
+            return true;
         }
 
         //cache miss
-        
+
         if (write_allocate_type == Yes) {
-            //find the victim way by the policy
-            int victim = policy[index]->victim();
+            if (victim < 0) {
+                //find the victim way by the policy
+                victim = policy[index]->victim();
+            }
 
             //swap out the victim block to memory
             way_metadata[index][victim]->before_swap_out();

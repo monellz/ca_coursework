@@ -2,9 +2,12 @@
 #define CACHE_UTIL_H_
 
 #include <stdint.h>
+#include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <atomic>
 #include <iostream>
+#include "omp.h"
 #include "perf_stats.h"
 
 namespace cache {

@@ -14,13 +14,22 @@ public:
     virtual void show() {}
 };
 
+//Directly Mapping
+template<>
+class ReplacePolicy<1> {
+public:
+    ReplacePolicy<1>(){};
+    void access(int access_way) {}
+    int victim() { return 0; };
+    void show() {}
+};
+
+
 template<unsigned WAY>
 class LRU: public ReplacePolicy<WAY> {
 public:
     //left->top(newest),  right->bottom(oldest)
     Bitset<CEIL_LOG2(WAY) * WAY> stack;
-
-
     LRU() {
         stack.reset();
         int w = stack_width();
@@ -76,7 +85,19 @@ public:
     #define lc(x) (((x) << 1) | 1)
     //right child
     #define rc(x) (((x) + 1) << 1)
+    //parent
+    #define para(x) (((x) - 1) >> 1)
 
+    void access(int access_way) {
+        int c = access_way + metadata.size();
+        int p = para(c);
+        while (p >= 0) {
+            if (lc(p) == c) metadata.set(p);
+            else metadata.reset(p);
+            c = p;
+            p = para(c);
+        }
+    }
     int victim() {
         int i = 0;
         int p = i;
@@ -84,9 +105,8 @@ public:
             p = i;
             if (metadata.test(i)) i = rc(i);
             else i = lc(i);
-            metadata.flip(p);
+            //metadata.flip(p);
         }
-
         if (metadata.test(i)) return rc(i) - metadata.size();
         else return lc(i) - metadata.size();
     }
