@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5)
 project(cache_simulator)
 
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++14")
 find_package(OpenMP REQUIRED)
 if (OPENMP_FOUND)
     message("openmp found")
@@ -10,7 +10,6 @@ if (OPENMP_FOUND)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
-
 
 configure_file(
     ${PROJECT_SOURCE_DIR}/include/global_build_config.h.in
@@ -26,5 +25,11 @@ add_subdirectory(cache)
 add_subdirectory(file_parser)
 add_subdirectory(bench)
 
-enable_testing()
-add_subdirectory(test)
+find_package(GTest REQUIRED)
+if (GTEST_FOUND)
+    message("gtest found")
+    include_directories(${GTEST_INCLUDE_DIRS})
+    enable_testing()
+    add_subdirectory(test)
+endif()
+

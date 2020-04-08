@@ -6,6 +6,4 @@ cd build
 
 cmake ..
 make
-make test
-#cd test
-#./replace_policy_test
+#make test

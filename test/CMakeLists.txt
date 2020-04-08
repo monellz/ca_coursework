@@ -1,6 +1,3 @@
-find_package(GTest REQUIRED)
-
-include_directories(${GTEST_INCLUDE_DIRS})
 add_executable(parse_test parse_test.cc)
 add_executable(bitset_test bitset_test.cc)
 add_executable(replace_policy_test replace_policy_test.cc)
