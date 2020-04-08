@@ -58,7 +58,7 @@ public:
     }
 
     unsigned int range_miss_num(int s, int e) {
-        assert(s < time && e < time);
+        assert(s < time && e <= time);
         unsigned long long interval = access_log.range_get(s, e);
         return bit_weight(interval);
     }

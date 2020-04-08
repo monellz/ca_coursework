@@ -8,7 +8,7 @@ namespace cache {
 
 //INTERVAL: 100K(default)
 //STEP = 0 -> static initial score
-template<unsigned WAY, unsigned SCORE = 6, unsigned IV = 40, unsigned DV = 1, unsigned INTERVAL = 100000, unsigned PREV = 32, unsigned STEP = 3>
+template<unsigned WAY, unsigned INIT_SCORE = 0, unsigned THRESHOLD = 48, unsigned SCORE = 6, unsigned IV = 40, unsigned DV = 1, unsigned INTERVAL = 100000, unsigned PREV = 32, unsigned STEP = 3>
 class Score: public ReplacePolicy<WAY> {
 public:
     //| scores[0] | ... | scores[WAY - 1] | init_score | threshold | prev_miss_num | direction
@@ -38,7 +38,7 @@ public:
     }
 
     inline unsigned int get_prev_miss_num() {
-        return scores.range_set((WAY + 2) * width(), (WAY + 3) * width());
+        return scores.range_get((WAY + 2) * width(), (WAY + 3) * width());
     }
 
     inline int direction() {
@@ -49,10 +49,11 @@ public:
         scores.flip(scores.size() - 1);
     }
 
-    Score(unsigned int init_score) {
-        set_init_score(init_score);
+    Score() {
+        set_init_score(INIT_SCORE);
+        set_threshold(THRESHOLD);
         for (int i = 0; i < WAY; ++i) {
-            scores.range_set(i * width(), (i + 1) * width(), init_score);
+            scores.range_set(i * width(), (i + 1) * width(), INIT_SCORE);
         }
     }
 
@@ -75,7 +76,7 @@ public:
         //increase score
         unsigned int s = scores.range_get(access_way * width(), (access_way + 1) * width());
         s = upper_score() - s <= IV? upper_score(): s + IV; 
-        scores.range_set(access_way * width(), (access_way + 1) * width());
+        scores.range_set(access_way * width(), (access_way + 1) * width(), s);
 
         dynamic_init_score();
     }
