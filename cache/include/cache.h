@@ -27,7 +27,6 @@ private:
 public:
     CacheSimulator(WriteAllocate type): write_allocate_type(type) {
         assert(TAG + INDEX + BLOCK == 64);
-        #pragma omp parallel for schedule(dynamic)
         for (int i = 0; i < GROUP; ++i) {
             for (int j = 0; j < WAY; ++j) {
                 way_metadata[i][j] = new WRITE_POLICY();

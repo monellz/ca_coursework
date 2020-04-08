@@ -25,7 +25,7 @@ add_subdirectory(cache)
 add_subdirectory(file_parser)
 add_subdirectory(bench)
 
-find_package(GTest REQUIRED)
+find_package(GTest COMPONENTS)
 if (GTEST_FOUND)
     message("gtest found")
     include_directories(${GTEST_INCLUDE_DIRS})
